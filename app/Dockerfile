@@ -1,4 +1,6 @@
 FROM alpine:latest
 
-COPY app /bin/app
+COPY build/emoji-app-linux /bin/emoji-app
+
+ENTRYPOINT /bin/emoji-app
 
