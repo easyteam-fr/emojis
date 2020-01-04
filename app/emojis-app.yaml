@@ -1,20 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: emojis
+  name: emojis-app
 spec:
   selector:
     matchLabels:
-      app: emojis
+      app: emojis-app
   replicas: 1
   template:
     metadata:
       labels:
-        app: emojis
+        app: emojis-app
     spec:
       containers:
-      - name: emojis
+      - name: emojis-app
         image: emojis-app
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
         - containerPort: 8081
@@ -24,13 +25,15 @@ kind: Service
 metadata:
   name: emojis
   labels:
-    app: emojis
+    app: emojis-app
 spec:
   ports:
   - port: 8080
     protocol: TCP
+    name: application
   - port: 8081
     protocol: TCP
+    name: administration
   selector:
-    app: emojis
+    app: emojis-app
 ---

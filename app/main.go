@@ -80,7 +80,7 @@ func emojiApiHandler(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(`{}`))
 		return
 	}
-	if r.Method == "POST" {
+	if r.Method == "PUT" {
 		e := emoji.NewAllEmoji().WithShortcode(fmt.Sprintf(":%s:", id))
 		if e != nil {
 			w.WriteHeader(http.StatusOK)

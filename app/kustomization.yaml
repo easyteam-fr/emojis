@@ -1,8 +1,8 @@
-apiVersion: kustomize.config.k8s.io/v1beta1 
+apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- kubernetes.yaml
+- emojis-app.yaml
 images:
 - name: emojis-app
   newName: registry:5000/emojis-app
-
+  newTag: latest
