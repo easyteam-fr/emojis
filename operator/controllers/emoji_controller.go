@@ -27,6 +27,7 @@ import (
 	emojivoto "github.com/buoyantio/emojivoto/emojivoto-emoji-svc/emoji"
 	appv1alpha1 "github.com/easyteam-fr/emojis/operator/api/v1alpha1"
 	apierror "k8s.io/apimachinery/pkg/api/errors"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // EmojiReconciler reconciles a Emoji object
@@ -109,6 +110,23 @@ func (r *EmojiReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 		return ctrl.Result{}, nil
 	}
 
+	if emoji.Status.LastPublishedTime == nil &&
+		emoji.Status.Supported != nil &&
+		*emoji.Status.Supported == true {
+		now := metav1.Now()
+		emoji.Status.LastPublishedTime = &now
+		emoji.Status.LastPublishedOutput = "Succeeded"
+		err := emojiCreateOrUpdate(&emoji)
+		if err != nil {
+			emoji.Status.LastPublishedOutput = fmt.Sprintf("Error %v", err)
+		}
+		if err = r.Status().Update(ctx, &emoji); err != nil {
+			log.Error(err, "unable to update emoji status")
+			return ctrl.Result{}, err
+		}
+		log.Info("application updated")
+		return ctrl.Result{}, err
+	}
 	return ctrl.Result{}, nil
 }
 
@@ -143,9 +161,4 @@ func removeString(slice []string, s string) (result []string) {
 		result = append(result, item)
 	}
 	return
-}
-
-// Simulate the removal of an emoji
-func emojiDelete(emoji *appv1alpha1.Emoji) error {
-	return nil
 }
