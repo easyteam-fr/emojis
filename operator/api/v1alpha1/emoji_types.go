@@ -47,7 +47,6 @@ type EmojiStatus struct {
 	// Information when the last time the Emoji was published what has been the output.
 	// +optional
 	LastPublishedOutput string `json:"lastPublishedOutput,omitempty"`
-
 }
 
 // +kubebuilder:object:root=true
