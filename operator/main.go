@@ -46,6 +46,11 @@ func main() {
 		"Enable leader election for controller manager. Enabling this will ensure there is only one active controller manager.")
 	flag.Parse()
 
+	namespace := "default"
+	if os.Getenv("EMOJIS_NAMESPACE") != "" {
+		namespace = os.Getenv("EMOJIS_NAMESPACE")
+	}
+
 	ctrl.SetLogger(zap.New(func(o *zap.Options) {
 		o.Development = true
 	}))
@@ -53,6 +58,7 @@ func main() {
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
 		Scheme:             scheme,
 		MetricsBindAddress: metricsAddr,
+		Namespace:          namespace,
 		LeaderElection:     enableLeaderElection,
 		Port:               9443,
 	})
