@@ -29,6 +29,9 @@ spec:
         - --enable-leader-election
         image: controller:latest
         name: manager
+        env:
+        - name: EMOJIS_ENDPOINT
+          value: http://emojis.default.svc.cluster.local:8081
         resources:
           limits:
             cpu: 100m
