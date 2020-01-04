@@ -50,16 +50,15 @@ This project contains a step by step example of how to build a controller. Each
 branch contains a step. To work with it, go to `master` which has no operator
 at all, only the application. The main steps are:  
 
-- `feature/operator/01-initialization` contains the code scaffold
-- `feature/operator/02-namespace-operator` changes the operator so that it is
-  only executed on a single namespace
-- `feature/operator/03-crd-and-controller` creates en empty emoji CRD and
-  controller
-- `feature/operator/04-specify-emoji-type` add expected types to the CRD
-- `feature/operator/05-implement-support` implements a status.supported
-  properties that tells if the Emoji is supported
-- `feature/operator/06-implement-finalizer` implements a finalizer to manage
-  resource deletion
-- `feature/operator/07-implement-applogic` adds the logic to interact with
-  the api
+- `operator/01-initialization` contains the code scaffold
+- `operator/02-namespace-operator` changes the operator so that it monitors a
+  single namespace
+- `operator/03-crd-and-controller` creates en empty emoji CRD and controller
+- `operator/04-specify-emoji-type` add expected types to the CRD
+- `operator/05-implement-support` implements a status.supported properties that
+  tells if the Emoji is supported
+- `operator/06-implement-finalizer` implements a finalizer to manage resource
+  deletion
+- `operator/07-implement-applogic` adds the logic to interact with the api
+- `operator/08-deployment` perform the last changes to deploy the controller
 
