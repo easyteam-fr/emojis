@@ -1,0 +1,26 @@
+# permissions to do edit emojis.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: emoji-editor-role
+rules:
+- apiGroups:
+  - app.natives.easyteam.fr
+  resources:
+  - emojis
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - app.natives.easyteam.fr
+  resources:
+  - emojis/status
+  verbs:
+  - get
+  - patch
+  - update

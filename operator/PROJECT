@@ -1,3 +1,7 @@
 domain: natives.easyteam.fr
 repo: github.com/easyteam-fr/emojis/operator
+resources:
+- group: app
+  kind: Emoji
+  version: v1alpha1
 version: "2"

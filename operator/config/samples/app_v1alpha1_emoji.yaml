@@ -1,0 +1,7 @@
+apiVersion: app.natives.easyteam.fr/v1alpha1
+kind: Emoji
+metadata:
+  name: emoji-sample
+spec:
+  # Add fields here
+  foo: bar
