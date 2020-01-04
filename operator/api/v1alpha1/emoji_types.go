@@ -27,17 +27,31 @@ type EmojiSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of Emoji. Edit Emoji_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	// Description allows to add a description to an Emoji.
+	Description string `json:"description,omitempty"`
 }
 
 // EmojiStatus defines the observed state of Emoji
 type EmojiStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
+
+	// Defines if the Emoji is part of the 100 registered Emojis
+	// +optional
+	Supported *bool `json:"supported,omitempty"`
+
+	// Information when was the last time the Emoji was successfully published.
+	// +optional
+	LastPublishedTime *metav1.Time `json:"lastPublishedTime,omitempty"`
+
+	// Information when the last time the Emoji was published what has been the output.
+	// +optional
+	LastPublishedOutput string `json:"lastPublishedOutput,omitempty"`
+
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
 
 // Emoji is the Schema for the emojis API
 type Emoji struct {

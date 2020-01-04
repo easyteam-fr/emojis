@@ -1,0 +1,6 @@
+apiVersion: app.natives.easyteam.fr/v1alpha1
+kind: Emoji
+metadata:
+  name: bee
+spec:
+  description: A sample resource that is NOT managed by the operator

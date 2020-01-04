@@ -1,0 +1,6 @@
+apiVersion: app.natives.easyteam.fr/v1alpha1
+kind: Emoji
+metadata:
+  name: dog
+spec:
+  description: A sample resource that is managed by the operator

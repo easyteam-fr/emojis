@@ -15,6 +15,8 @@ spec:
     plural: emojis
     singular: emoji
   scope: Namespaced
+  subresources:
+    status: {}
   validation:
     openAPIV3Schema:
       description: Emoji is the Schema for the emojis API
@@ -34,13 +36,25 @@ spec:
         spec:
           description: EmojiSpec defines the desired state of Emoji
           properties:
-            foo:
-              description: Foo is an example field of Emoji. Edit Emoji_types.go to
-                remove/update
+            description:
+              description: Description allows to add a description to an Emoji.
               type: string
           type: object
         status:
           description: EmojiStatus defines the observed state of Emoji
+          properties:
+            lastPublishedOutput:
+              description: Information when the last time the Emoji was published
+                what has been the output.
+              type: string
+            lastPublishedTime:
+              description: Information when was the last time the Emoji was successfully
+                published.
+              format: date-time
+              type: string
+            supported:
+              description: Defines if the Emoji is part of the 100 registered Emojis
+              type: boolean
           type: object
       type: object
   version: v1alpha1
