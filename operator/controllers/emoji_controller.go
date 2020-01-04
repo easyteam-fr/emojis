@@ -53,6 +53,47 @@ func (r *EmojiReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 		return ctrl.Result{}, ignoreNotFound(err)
 	}
 
+	// name the emoji finalizer
+	emojiFinalizerName := "emoji.finalizers.app.natives.easyteam.fr"
+
+	// examine DeletionTimestamp to determine if object is under deletion
+	if !emoji.ObjectMeta.DeletionTimestamp.IsZero() {
+		// The object is being deleted
+		if containsString(emoji.ObjectMeta.Finalizers, emojiFinalizerName) {
+			// our finalizer is present, so lets handle any external dependency
+			if emoji.Status.Supported != nil && *emoji.Status.Supported == true {
+				if err := emojiDelete(&emoji); err != nil {
+					return ctrl.Result{}, err
+				}
+			}
+			// Notify the client when the deletion is done by removing
+			// the Finalizer for the resource
+			emoji.ObjectMeta.Finalizers = removeString(
+				emoji.ObjectMeta.Finalizers,
+				emojiFinalizerName,
+			)
+			if err := r.Update(context.Background(), &emoji); err != nil {
+				return ctrl.Result{}, err
+			}
+			log.Info("finalizer removed")
+			return ctrl.Result{}, nil
+		}
+	}
+	// The object is not being deleted, so if it does not have our finalizer,
+	// then lets add the finalizer and update the object. This is equivalent
+	// registering our finalizer.
+	if !containsString(emoji.ObjectMeta.Finalizers, emojiFinalizerName) {
+		emoji.ObjectMeta.Finalizers = append(
+			emoji.ObjectMeta.Finalizers,
+			emojiFinalizerName,
+		)
+		if err := r.Update(context.Background(), &emoji); err != nil {
+			return ctrl.Result{}, err
+		}
+		log.Info("finalizer registered")
+		return ctrl.Result{}, nil
+	}
+
 	if emoji.Status.Supported == nil {
 		supported := false
 		e := emojivoto.NewAllEmoji().WithShortcode(fmt.Sprintf(":%s:", emoji.Name))
@@ -82,4 +123,29 @@ func ignoreNotFound(err error) error {
 		return nil
 	}
 	return err
+}
+
+// Helper functions to check and remove string from a slice of strings.
+func containsString(slice []string, s string) bool {
+	for _, item := range slice {
+		if item == s {
+			return true
+		}
+	}
+	return false
+}
+
+func removeString(slice []string, s string) (result []string) {
+	for _, item := range slice {
+		if item == s {
+			continue
+		}
+		result = append(result, item)
+	}
+	return
+}
+
+// Simulate the removal of an emoji
+func emojiDelete(emoji *appv1alpha1.Emoji) error {
+	return nil
 }
